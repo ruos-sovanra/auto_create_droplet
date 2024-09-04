@@ -94,6 +94,8 @@ function create_droplet_and_setup() {
     DROPLET_ID=$(echo $RESPONSE | jq -r '.droplet.id')
     if [ "$DROPLET_ID" != "null" ]; then
         echo "Droplet created successfully! ID: $DROPLET_ID"
+        # Append droplet details to listdroplet.txt
+        echo "Droplet ID: $DROPLET_ID, Name: $DROPLET_NAME, Tags: web" >> listdroplet.txt
     else
         echo "Failed to create droplet. Response: $RESPONSE"
         exit 1
