@@ -6,6 +6,7 @@ function get_droplet_name() {
     DROPLET_NAME="${USER_DROPLET_NAME:-example-droplet}"
 }
 
+
 # Function to prompt the user for droplet size
 function choose_droplet_size() {
     echo "Choose a droplet size:"
@@ -51,7 +52,9 @@ function create_droplet_and_setup() {
         -H "Authorization: Bearer $API_TOKEN" \
         | jq -r --arg key "$SSH_KEY" '.ssh_keys[] | select(.public_key == $key) | .id')
 
-    if [ "$KEY_EXISTS" != "null" ]; then
+    echo "Key Exists Check: $KEY_EXISTS"  # Debugging output
+
+    if [ "$KEY_EXISTS" != "null" ] && [ -n "$KEY_EXISTS" ]; then
         SSH_KEY_ID=$KEY_EXISTS
         echo "SSH Key already exists! ID: $SSH_KEY_ID"
     else
@@ -66,7 +69,8 @@ function create_droplet_and_setup() {
 
         # Extract and print the SSH key ID from the response
         SSH_KEY_ID=$(echo $RESPONSE | jq -r '.ssh_key.id')
-        if [ "$SSH_KEY_ID" != "null" ]; then
+        echo "SSH Key Upload Response: $RESPONSE"  # Debugging output
+        if [ "$SSH_KEY_ID" != "null" ] && [ -n "$SSH_KEY_ID" ]; then
             echo "SSH Key uploaded successfully! ID: $SSH_KEY_ID"
         else
             echo "Failed to upload SSH key. Response: $RESPONSE"
@@ -90,9 +94,11 @@ function create_droplet_and_setup() {
             "tags":["web"]
         }')
 
+    echo "Droplet Creation Response: $RESPONSE"  # Debugging output
+
     # Extract and print the droplet ID from the response
     DROPLET_ID=$(echo $RESPONSE | jq -r '.droplet.id')
-    if [ "$DROPLET_ID" != "null" ]; then
+    if [ "$DROPLET_ID" != "null" ] && [ -n "$DROPLET_ID" ]; then
         echo "Droplet created successfully! ID: $DROPLET_ID"
         # Append droplet details to listdroplet.txt
         echo "Droplet ID: $DROPLET_ID, Name: $DROPLET_NAME, Tags: web" >> listdroplet.txt

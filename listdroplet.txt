@@ -1,2 +1,5 @@
 Droplet ID: 443122976, Name: testing, Tags: web
 Droplet ID: 443123430, Name: testing, Tags: web
+Droplet ID: 443305503, Name: nam, Tags: web
+Droplet ID: 443495744, Name: sokny, Tags: web
+Droplet ID: 444060718, Name: name, Tags: web
